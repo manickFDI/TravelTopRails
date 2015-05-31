@@ -1,0 +1,10 @@
+/usr/local/rubyONrails/bin/ruby extconf.rb 
+creating Makefile
+
+make "DESTDIR=" clean
+
+make "DESTDIR="
+make: No se hace nada para `all'.
+
+make "DESTDIR=" install
+installing default libraries

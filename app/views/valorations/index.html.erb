@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    
+    <script src="/assets/d3/d3.min.js" charset="utf-8"></script>
+    <script src="/assets/c3/c3.js"></script>
+    <script src="/assets/topojson/topojson.js"></script>
+    <script src="/assets/datamap/datamap-world.js"></script>
+    <!-- Load c3.css -->
+    <link href="/assets/c3/c3.css" rel="stylesheet" type="text/css">
+
+    <title>Proyecto MIN</title>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <a id="menu-toggle" href="#" class="btn btn-dark btn-lg toggle"><i class="fa fa-bars"></i></a>
+    <nav id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+            <a id="menu-close" href="#" class="btn btn-light btn-lg pull-right toggle"><i class="fa fa-times"></i></a>
+            <li class="sidebar-brand">
+                <a href="#top">Home</a>
+            </li>
+            <li>
+                <a href="#masValorados">Más valorados</a>
+            </li>
+            <li>
+                <a href="#menosValorados">Menos valorados</a>
+            </li>
+            <li>
+                <a href="#todasCiudades">Todas las ciudades</a>
+            </li>
+              <li>
+                <a href="#actualizarValoraciones">Actualizar valoraciones</a>
+            </li>
+            <li>
+                <a href="#nuestrasCiudades">Nuestas ciudades</a>
+            </li>
+            <li>
+                <a href="#basic_choropleth">Mapa</a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Header -->
+    <header id="top" class="header">
+        <div class="text-vertical-center">
+            <%= image_tag("viajes_f.jpg", class:"img-portfolio img-responsive") %>
+        </div>
+    </header>
+
+    <header id="masValorados" class="header">
+        <div class="text-vertical-center">
+                <br><br><br>
+                <h1>Ciudades más valoradas</h1>
+                <br><br><br>
+
+               
+
+                <% @valorations = Valoration.order("valor desc").limit(3)%>
+                <% @valorations.each do |valoration| %>
+                    <tr>
+                    <div class="thumbnail clearfix">
+                    <div class="caption" class="pull-left">
+                      <td><%= link_to 'Show', valoration, class: 'btn btn-info pull-right' %></td>
+                      <h3>      
+                      <%= valoration.ciudad_v %>
+                      </h3>
+                      <small><b>Valor: </b><%= valoration.valor %></small>  
+                    </div>
+                     </div>
+                     </tr>
+                <% end %>
+
+
+                 <% @valorations = Valoration.order("valor asc").limit(3)%>
+                 <% @valorationsDes = Valoration.order("valor desc").limit(3)%>
+        
+          
+
+                 <%=
+                if (@valorations.third().nil?)
+                    @ciudad1 = ""
+                    @ciudad1v = ""
+                    @ciudad2 = ""
+                    @ciudad2v = ""
+                    @ciudad3 = ""
+                    @ciudad3v = ""
+                else
+                    @ciudad1 = @valorations.first().ciudad_v
+                    @ciudad1v = @valorations.first().valor
+                    @ciudad2 = @valorations.second().ciudad_v
+                    @ciudad2v = @valorations.second().valor
+                    @ciudad3 = @valorations.third().ciudad_v
+                    @ciudad3v = @valorations.third().valor
+                end 
+
+
+
+                if (@valorationsDes.third().nil?)
+                    @c1 = ""
+                    @c1v = ""
+                    @c2 = ""
+                    @c2v = ""
+                    @c3 = ""
+                    @c3v = ""
+                else
+                    @c1 = @valorationsDes.first().ciudad_v
+                    @c1v = @valorationsDes.first().valor
+                    @c2 = @valorationsDes.second().ciudad_v
+                    @c2v = @valorationsDes.second().valor
+                    @c3 = @valorationsDes.third().ciudad_v
+                    @c3v = @valorationsDes.third().valor
+                end 
+                %>
+
+                <script>
+                 function generate() {
+
+                    }
+
+                    var storedData = [
+                                { '<%=@ciudad1%>': <%=@ciudad1v%> , '<%=@ciudad2%>': <%=@ciudad2v%>, '<%=@ciudad3%>': <%=@ciudad3v%>},
+                            ];
+
+                    var barMenos = c3.generate({
+                                size: {
+                                    height: 240,
+                                    width: 480
+                                },
+                                bindto: '#barMenos',
+                                data: {
+                                    json: storedData,
+                                    keys: {
+                                        value: ['<%=@ciudad1%>', '<%=@ciudad2%>', '<%=@ciudad3%>']
+                                    },
+                                    type : 'bar'
+                                }
+                            });
+
+                    var storedData2 = [
+                                { '<%=@c1%>': <%=@c1v%> , '<%=@c2%>': <%=@c2v%>, '<%=@c3%>': <%=@c3v%>},
+                            ];
+
+                    var barMas = c3.generate({
+                                size: {
+                                    height: 240,
+                                    width: 480
+                                },
+                                bindto: '#barMas',
+                                data: {
+                                    json: storedData2,
+                                     keys: {
+                                        value: ['<%=@c1%>', '<%=@c2%>', '<%=@c3%>']
+                                    },
+                                    type : 'bar'
+                                }
+                            });
+                
+
+
+                </script>
+
+
+
+                <br><br>
+                <div class="alinear" id="barMas"></div>
+                <br><br> <br><br>
+        </div>
+
+    </header>
+     <header id="menosValorados" class="header">
+        <div class="text-vertical-center">
+                <br><br><br>
+                <h1>Ciudades menos valoradas</h1>
+                <br><br><br>
+                <% @valorations = Valoration.order("valor asc").limit(3)%>
+                <% @valorations.each do |valoration| %>
+                    <tr>
+                    <div class="thumbnail clearfix">
+                    <div class="caption" class="pull-left">
+                      <td><%= link_to 'Show', valoration, class: 'btn btn-info pull-right' %></td>
+                      <h3>      
+                      <%= valoration.ciudad_v %>
+                      </h3>
+                      <small><b>Valor: </b><%= valoration.valor %></small>  
+                    </div>
+                     </div>
+                     </tr>
+                <% end %> 
+                <br><br>
+                <div class="alinear" id="barMenos"></div>               
+                <br><br><br>
+         </div>
+
+    </header>
+
+     <header id="todasCiudades" class="header">
+        <div class="text-vertical-center">
+                <br><br><br>
+                <h1>Lista de ciudades</h1>
+                <br><br><br>
+                <% @valorations = Valoration.order("valor asc").limit(10)%>
+                <% @valorations.each do |valoration| %>
+                    <tr>
+                    <div class="thumbnail clearfix">
+                    <div class="caption" class="pull-left">
+                      <td><%= link_to 'Show', valoration, class: 'btn btn-info pull-right' %></td>
+                      <h3>      
+                      <%= valoration.ciudad_v %>
+                      </h3>
+                      <small><b>Valor: </b><%= valoration.valor %></small>  
+                    </div>
+                     </div>
+                     </tr>
+                <% end %> 
+
+
+                  <% @valorationsAll = Valoration.order("valor asc").limit(10)%>
+        
+          
+
+                 <%=
+                if (@valorationsAll[9].nil?)
+                    @ciudad1 = ""
+                    @ciudad1v = ""
+                    @ciudad2 = ""
+                    @ciudad2v = ""
+                    @ciudad3 = ""
+                    @ciudad3v = ""
+
+                    @ciudad4 = ""
+                    @ciudad4v = ""
+                    @ciudad5 = ""
+                    @ciudad5v = ""
+                    @ciudad6 = ""
+                    @ciudad6v = ""
+
+                    @ciudad7 = ""
+                    @ciudad7v = ""
+                    @ciudad8 = ""
+                    @ciudad8v = ""
+                    @ciudad9 = ""
+                    @ciudad9v = ""
+                else
+                    @ciudad1 = @valorations.first.ciudad_v
+                    @ciudad1v = @valorations[1].valor
+                    @ciudad2 = @valorations[2].ciudad_v
+                    @ciudad2v = @valorations[2].valor
+                    @ciudad3 = @valorations[3].ciudad_v
+                    @ciudad3v = @valorations[3].valor
+
+
+                    @ciudad4 = @valorations[4].ciudad_v
+                    @ciudad4v = @valorations[4].valor
+                    @ciudad5 = @valorations[5].ciudad_v
+                    @ciudad5v = @valorations[5].valor
+                    @ciudad6 = @valorations[6].ciudad_v
+                    @ciudad6v = @valorations[6].valor
+
+
+                    @ciudad7 = @valorations[7].ciudad_v
+                    @ciudad7v = @valorations[7].valor
+                    @ciudad8 = @valorations[8].ciudad_v
+                    @ciudad8v = @valorations[8].valor
+                    @ciudad9 = @valorations[9].ciudad_v
+                    @ciudad9v = @valorations[9].valor
+
+                    @ciudad10 = @valorations[0].ciudad_v
+                    @ciudad10v = @valorations[0].valor
+
+
+                end 
+                %>
+
+                <script>
+                    var storedData3 = [
+                                { '<%=@ciudad1%>': <%=@ciudad1v%> , '<%=@ciudad2%>': <%=@ciudad2v%>, '<%=@ciudad3%>': <%=@ciudad3v%>, 
+                                    '<%=@ciudad4%>': <%=@ciudad4v%> , '<%=@ciudad5%>': <%=@ciudad5v%>, '<%=@ciudad6%>': <%=@ciudad6v%>,
+                                        '<%=@ciudad7%>': <%=@ciudad7v%> , '<%=@ciudad8%>': <%=@ciudad8v%>, '<%=@ciudad9%>': <%=@ciudad9v%>, '<%=@ciudad10%>': <%=@ciudad10v%>},
+                            ];
+
+                    var barTodas = c3.generate({
+                                size: {
+                                    height: 240,
+                                    width: 480
+                                },
+                                bindto: '#barTodas',
+                                data: {
+                                    json: storedData3,
+                                    keys: {
+                                        value: ['<%=@ciudad1%>', '<%=@ciudad2%>', '<%=@ciudad3%>',
+                                                '<%=@ciudad4%>', '<%=@ciudad5%>', '<%=@ciudad6%>',
+                                                '<%=@ciudad7%>', '<%=@ciudad8%>', '<%=@ciudad9%>',
+                                                '<%=@ciudad10%>']
+                                    },
+                                    type : 'bar'
+                                }
+                            });
+
+                </script>
+
+                <br><br>
+                <div class="alinear" id="barTodas"></div>               
+                <br><br><br>
+
+         </div>
+
+    </header>
+
+     <header id="actualizarValoraciones" class="header">
+        <div class="botonActualizar">
+             <br><br><br>
+                <%= link_to 'Actualizar valoraciones', new_valoration_path, class: 'btn btn-success btn-lg'%>
+                </div>
+         </div>
+
+    </header>
+
+<style>
+  .carousel-inner > .item > img,
+  .carousel-inner > .item > a > img {
+      width: 90%;
+      margin: auto;
+  }
+  .botonActualizar {
+    margin-left: 150px;
+    padding: 10px;
+  }
+</style>
+
+<div class="text-vertical-center">
+                <br><br><br>
+                <h1>Nuestras ciudades a color</h1>
+                <br><br><br>
+</div>
+
+    <header id="nuestrasCiudades" class="header">
+        <div class="container">
+            <div class="row">
+                <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                    <ol class="carousel-indicators">
+                        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                        <li data-target="#myCarousel" data-slide-to="1"></li>
+                        <li data-target="#myCarousel" data-slide-to="2"></li>
+                        <li data-target="#myCarousel" data-slide-to="3"></li>
+                        <li data-target="#myCarousel" data-slide-to="4"></li>
+                        <li data-target="#myCarousel" data-slide-to="5"></li>
+                        <li data-target="#myCarousel" data-slide-to="6"></li>
+                        <li data-target="#myCarousel" data-slide-to="7"></li>
+                        <li data-target="#myCarousel" data-slide-to="8"></li>
+                        <li data-target="#myCarousel" data-slide-to="9"></li>
+                    </ol>
+                        <div class="carousel-inner" role="listbox">
+                            <div class="item active">
+                                <%= image_tag("madrid.jpg", class:"carousel-inner") %>
+                                <div class="carousel-caption">
+                                    <h3>Madrid</h3>
+                                </div>        
+                            </div>
+
+                            <div class="item">
+                                <%= image_tag("paris.jpg", class:"carousel-inner") %>
+                                <div class="carousel-caption">
+                                    <h3>París</h3>
+                                </div>        
+                            </div>
+
+                            <div class="item">
+                                <%= image_tag("roma.jpg", class:"carousel-inner") %>
+                                <div class="carousel-caption">
+                                    <h3>Roma</h3>
+                                </div>      
+                            </div>
+
+                            <div class="item">
+                               <%= image_tag("nuevayork.jpg", class:"carousel-inner") %>
+                               <div class="carousel-caption">
+                                    <h3>Nueva York</h3>
+                                </div>  
+                            </div>
+
+                            <div class="item">
+                                <%= image_tag("amsterdam.jpg", class:"carousel-inner") %>
+                                <div class="carousel-caption">
+                                    <h3>Amsterdam</h3>
+                                </div>  
+                            </div>
+
+                            <div class="item">
+                                <%= image_tag("malta.jpg", class:"carousel-inner") %>
+                                <div class="carousel-caption">
+                                    <h3>Malta</h3>
+                                </div>  
+                            </div>
+
+                            <div class="item">
+                                <%= image_tag("pekin.jpg", class:"carousel-inner") %>
+                                <div class="carousel-caption">
+                                    <h3>Pekín</h3>
+                                </div>
+                            </div>
+
+                            <div class="item">
+                                <%= image_tag("riodejaneiro.jpg", class:"carousel-inner") %>
+                                <div class="carousel-caption">
+                                    <h3>Río de Janeiro</h3>
+                            </div>
+                        
+                            <div class="item">
+                                <%= image_tag("sidney.jpg", class:"carousel-inner") %>
+                                <div class="carousel-caption">
+                                    <h3>Sidney</h3>
+                                </div>  
+                            </div>
+
+                            <div class="item">
+                                <%= image_tag("elcairo.jpg", class:"carousel-inner") %>
+                                <div class="carousel-caption">
+                                    <h3>El Cairo</h3>
+                                </div>  
+                            </div>
+                        </div>
+                       
+</div>
+                    </div>
+                </div>
+            </div>
+    </header>
+<style type="text/css">
+    .centrar
+    {
+        
+        
+        /*determinamos una anchura*/
+        width:400px;
+        /*indicamos que el margen izquierdo, es la mitad de la anchura*/
+        margin-left:200px;
+        /*determinamos una altura*/
+        height:100px;
+        /*indicamos que el margen superior, es la mitad de la altura*/
+        
+       
+        padding:5px;
+    }
+
+    .alinear
+    {
+        
+        
+        /*determinamos una anchura*/
+        width:400px;
+        /*indicamos que el margen izquierdo, es la mitad de la anchura*/
+        margin-left:100px;
+        /*determinamos una altura*/
+        height:300px;
+        /*indicamos que el margen superior, es la mitad de la altura*/
+        
+       
+        padding:5px;
+    }
+</style>
+    <!-- Map -->
+    <div class="centrar" id="basic_choropleth" style="height: 800px; width: 900px;"></div>
+
+
+        
+
+            <script>
+             var dataT = {
+                        USA: { fillKey: "authorHasTraveledTo" },
+                        CHN: { fillKey: "authorHasTraveledTo" },
+                        ITA: { fillKey: "authorHasTraveledTo" },
+                        ESP: { fillKey: "authorHasTraveledTo" },
+                        BRA: { fillKey: "authorHasTraveledTo" },
+                        EGY: { fillKey: "authorHasTraveledTo" },
+                        AUS: { fillKey: "authorHasTraveledTo" },
+                        HOL: { fillKey: "authorHasTraveledTo" },
+                        FRA: { fillKey: "authorHasTraveledTo" },
+                        MLT: { fillKey: "authorHasTraveledTo" },
+                    }
+
+                    var map = new Datamap({
+                        element: document.getElementById("basic_choropleth"),
+                        projection: 'mercator',
+                        fills: {
+                            defaultFill: "#ABDDA4",
+                            authorHasTraveledTo: "#155612"
+                        },
+                        data: dataT,
+                    });
+
+                   
+                
+             </script>
+                  
+                   
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 col-lg-offset-1 text-center">
+                    <h4><strong>Travel Top</strong></h4>
+                    <p>Facultad de Informática<br>FDI, UCM</p>
+                    <ul class="list-unstyled">
+                        <li><i class="fa fa-github fa-fw"></i> Proyecto Mineria de datos <i class="fa fa-github-alt fa-fw"></i> </li>
+                        <li>
+                        <i class="fa fa-envelope-o fa-fw"></i>  <a href="mailto:manuma02@ucm.es">manuma02@ucm.es</a><br>
+                        <i class="fa fa-envelope-o fa-fw"></i>  <a href="mailto:guimarti@ucm.es">guimarti@ucm.es</a><br>
+                        <i class="fa fa-envelope-o fa-fw"></i>  <a href="mailto:diediaz@ucm.es">diediaz@ucm.es</a><br>
+                        <i class="fa fa-envelope-o fa-fw"></i>  <a href="mailto:lorenzoa@ucm.es">lorenzoa@ucm.es</a>
+                    </ul>
+                    <br>
+                    <ul class="list-inline">
+                      
+                        <li>
+                            <a href="#"><i class="fa fa-twitter fa-fw fa-3x"></i></a>
+                        </li>
+                    
+                    </ul>
+                    <hr class="small">
+                    <p class="text-muted">Copyright &copy; Travel Top TT 2015</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Custom Theme JavaScript -->
+    <script>
+    // Closes the sidebar menu
+    $("#menu-close").click(function(e) {
+        e.preventDefault();
+        $("#sidebar-wrapper").toggleClass("active");
+    });
+
+    // Opens the sidebar menu
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#sidebar-wrapper").toggleClass("active");
+    });
+
+    // Scrolls to the selected menu item on the page
+    $(function() {
+        $('a[href*=#]:not([href=#])').click(function() {
+            if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') || location.hostname == this.hostname) {
+
+                var target = $(this.hash);
+                target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+                if (target.length) {
+                    $('html,body').animate({
+                        scrollTop: target.offset().top
+                    }, 1000);
+                    return false;
+                }
+            }
+        });
+    });
+    </script>
+
+</body>
+
+</html>

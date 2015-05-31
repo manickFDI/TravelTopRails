@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+    <title>Proyecto MIN</title>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <a id="menu-toggle" href="#" class="btn btn-dark btn-lg toggle"><i class="fa fa-bars"></i></a>
+    <nav id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+            <a id="menu-close" href="#" class="btn btn-light btn-lg pull-right toggle"><i class="fa fa-times"></i></a>
+            <li class="sidebar-brand">
+                <a href="#top">Home</a>
+            </li>
+            <li>
+                <a href="#masValorados">Más valorados</a>
+            </li>
+            <li>
+                <a href="#menosValorados">Menos valorados</a>
+            </li>
+            <li>
+                <a href="#nuestrasCiudades">Nuestas ciudades</a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Header -->
+    <header id="top" class="header">
+        <div class="text-vertical-center">
+            <%= image_tag("viajes_f.jpg", class:"img-portfolio img-responsive") %>
+        </div>
+    </header>
+
+    <!-- Cambiar class para que aparezca el título y el contenido de forma diferente -->
+    <header id="masValorados" class="header">
+        <div class="text-vertical-center">
+                <h1>Ciudades más valoradas</h1>
+
+                <% @valorations = Valoration.order("valor desc").limit(2)%>
+                <% @valorations.each do |valoration| %>
+                    <tr>
+                     <h2><%= valoration.ciudad_v %></h2>
+                     <h2><%= valoration.valor %></h2>
+                      <td><%= link_to 'Show', valoration, class: 'btn btn-primary btn-xs' %></td>
+                     </tr>
+                <% end %>
+                <%= link_to 'Actualizar valoraciones', new_valoration_path %>
+        </div>
+
+    </header>
+
+
+    <!-- Cambiar class para que aparezca el título y el contenido de forma diferente -->
+    <header id="menosValorados" class="header">
+        <div class="text-vertical-center">
+                <h1>Ciudades menos valoradas</h1>
+
+                <% @valorations = Valoration.order("valor asc").limit(2)%>
+                <% @valorations.each do |valoration| %>
+                    <tr>
+                     <h2><%= valoration.ciudad_v %></h2>
+                     <h2><%= valoration.valor %></h2>
+                      <td><%= link_to 'Show', valoration, class: 'btn btn-primary btn-xs' %></td>
+                     </tr>
+                <% end %>
+            
+        </div>
+    </header>
+
+<style>
+  .carousel-inner > .item > img,
+  .carousel-inner > .item > a > img {
+      width: 70%;
+      margin: auto;
+  }
+</style>
+
+    <header id="nuestrasCiudades" class="header">
+        <div class="container">
+            <div class="row">
+                <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                    <ol class="carousel-indicators">
+                        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                        <li data-target="#myCarousel" data-slide-to="1"></li>
+                        <li data-target="#myCarousel" data-slide-to="2"></li>
+                        <li data-target="#myCarousel" data-slide-to="3"></li>
+                        <li data-target="#myCarousel" data-slide-to="4"></li>
+                        <li data-target="#myCarousel" data-slide-to="5"></li>
+                        <li data-target="#myCarousel" data-slide-to="6"></li>
+                        <li data-target="#myCarousel" data-slide-to="7"></li>
+                        <li data-target="#myCarousel" data-slide-to="8"></li>
+                        <li data-target="#myCarousel" data-slide-to="9"></li>
+                    </ol>
+                    <h2>Nuestras ciudades</h2>
+                        <div class="carousel-inner" role="listbox">
+                            <div class="item active">
+                                <%= image_tag("madrid.jpg", class:"carousel-inner") %>
+                                <div class="carousel-caption">
+                                    <h3>Madrid</h3>
+                                    <p>Blablablabla</p>
+                                </div>        
+                            </div>
+
+                            <div class="item">
+                                <%= image_tag("paris.jpg", class:"carousel-inner") %>
+                                <div class="carousel-caption">
+                                    <h3>París</h3>
+                                    <p>Blablablabla</p>
+                                </div>        
+                            </div>
+
+                            <div class="item">
+                                <%= image_tag("roma.jpg", class:"carousel-inner") %>
+                                <div class="carousel-caption">
+                                    <h3>Roma</h3>
+                                    <p>Blablablabla</p>
+                                </div>      
+                            </div>
+
+                            <div class="item">
+                               <%= image_tag("nuevayork.jpg", class:"carousel-inner") %>
+                               <div class="carousel-caption">
+                                    <h3>Nueva York</h3>
+                                    <p>Blablablabla</p>
+                                </div>  
+                            </div>
+
+                            <div class="item">
+                                <%= image_tag("amsterdam.jpg", class:"carousel-inner") %>
+                                <div class="carousel-caption">
+                                    <h3>Amsterdam</h3>
+                                    <p>Blablablabla</p>
+                                </div>  
+                            </div>
+
+                            <div class="item">
+                                <%= image_tag("malta.jpg", class:"carousel-inner") %>
+                                <div class="carousel-caption">
+                                    <h3>Malta</h3>
+                                    <p>Blablablabla</p>
+                                </div>  
+                            </div>
+
+                            <div class="item">
+                                <%= image_tag("pekin.jpg", class:"carousel-inner") %>
+                                <div class="carousel-caption">
+                                    <h3>Pekín</h3>
+                                    <p>Blablablabla</p>
+                                </div>
+                            </div>
+
+                            <div class="item">
+                                <%= image_tag("riodejaneiro.jpg", class:"carousel-inner") %>
+                                <div class="carousel-caption">
+                                    <h3>Río de Janeiro</h3>
+                                    <p>Blablablabla</p>
+                                </div>  
+                            </div>
+                        
+                            <div class="item">
+                                <%= image_tag("sidney.jpg", class:"carousel-inner") %>
+                                <div class="carousel-caption">
+                                    <h3>Sidney</h3>
+                                    <p>Blablablabla</p>
+                                </div>  
+                            </div>
+
+                            <div class="item">
+                                <%= image_tag("elcairo.jpg", class:"carousel-inner") %>
+                                <div class="carousel-caption">
+                                    <h3>El Cairo</h3>
+                                    <p>Blablablabla</p>
+                                </div>  
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </header>
+
+    <!-- Map -->
+    <section id="contact" class="map">
+        <iframe width="100%" height="100%" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=Twitter,+Inc.,+Market+Street,+San+Francisco,+CA&amp;aq=0&amp;oq=twitter&amp;sll=28.659344,-81.187888&amp;sspn=0.128789,0.264187&amp;ie=UTF8&amp;hq=Twitter,+Inc.,+Market+Street,+San+Francisco,+CA&amp;t=m&amp;z=15&amp;iwloc=A&amp;output=embed"></iframe>
+        <br />
+        <small>
+            <a href="https://maps.google.com/maps?f=q&amp;source=embed&amp;hl=en&amp;geocode=&amp;q=Twitter,+Inc.,+Market+Street,+San+Francisco,+CA&amp;aq=0&amp;oq=twitter&amp;sll=28.659344,-81.187888&amp;sspn=0.128789,0.264187&amp;ie=UTF8&amp;hq=Twitter,+Inc.,+Market+Street,+San+Francisco,+CA&amp;t=m&amp;z=15&amp;iwloc=A"></a>
+        </small>
+        </iframe>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 col-lg-offset-1 text-center">
+                    <h4><strong>Travel Top</strong>
+                    </h4>
+                    <p>Facultad de Informática<br>FDI, UCM</p>
+                    <ul class="list-unstyled">
+                        <li><i class="fa fa-github fa-fw"></i> Proyecto Mineria de datos <i class="fa fa-github-alt fa-fw"></i> </li>
+                        <li>
+                        <i class="fa fa-envelope-o fa-fw"></i>  <a href="mailto:name@example.com">manuma02@ucm.es</a>
+                        <i class="fa fa-envelope-o fa-fw"></i>  <a href="mailto:name@example.com">guimarti@ucm.es</a>
+                    </ul>
+                    <br>
+                    <ul class="list-inline">
+                      
+                        <li>
+                            <a href="#"><i class="fa fa-twitter fa-fw fa-3x"></i></a>
+                        </li>
+                    
+                    </ul>
+                    <hr class="small">
+                    <p class="text-muted">Copyright &copy; Travel Top TT 2015</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Custom Theme JavaScript -->
+    <script>
+    // Closes the sidebar menu
+    $("#menu-close").click(function(e) {
+        e.preventDefault();
+        $("#sidebar-wrapper").toggleClass("active");
+    });
+
+    // Opens the sidebar menu
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#sidebar-wrapper").toggleClass("active");
+    });
+
+    // Scrolls to the selected menu item on the page
+    $(function() {
+        $('a[href*=#]:not([href=#])').click(function() {
+            if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') || location.hostname == this.hostname) {
+
+                var target = $(this.hash);
+                target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+                if (target.length) {
+                    $('html,body').animate({
+                        scrollTop: target.offset().top
+                    }, 1000);
+                    return false;
+                }
+            }
+        });
+    });
+    </script>
+
+</body>
+
+</html>

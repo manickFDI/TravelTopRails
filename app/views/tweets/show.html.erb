@@ -1,0 +1,39 @@
+Tweet detallado:
+
+<p>
+  <strong>Ciudad:</strong>
+  <%= @tweet.source %>
+</p>
+
+<p>
+  <strong>Text:</strong>
+  <%= @tweet.text %>
+</p>
+
+<p>
+  <strong>Fecha:</strong>
+  <%= @tweet.created_at %>
+</p>
+
+<p>
+  <strong>Seguidores:</strong>
+  <%= @tweet.favorite_count %>
+</p>
+
+<p>
+  <strong>Idioma:</strong>
+  <%= @tweet.lang %>
+</p>
+
+<p>
+  <strong>Etiqueta:</strong>
+  <%= @tweet.etiqueta %>
+</p>
+
+<p>
+  <strong>Porcentaje:</strong>
+  <%= @tweet.porcentaje %>
+</p>
+
+<%= link_to 'Edit', edit_tweet_path(@tweet) %> |
+<%= link_to 'Back', tweets_path %>

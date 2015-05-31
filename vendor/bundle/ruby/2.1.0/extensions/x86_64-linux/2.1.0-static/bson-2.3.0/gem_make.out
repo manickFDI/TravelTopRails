@@ -1,0 +1,14 @@
+/usr/local/rubyONrails/bin/ruby extconf.rb 
+creating Makefile
+
+make "DESTDIR=" clean
+
+make "DESTDIR="
+compiling native.c
+native.c: In function ‘Init_native’:
+native.c:622:3: warning: implicit declaration of function ‘gethostname’ [-Wimplicit-function-declaration]
+linking shared-object native.so
+
+make "DESTDIR=" install
+/usr/bin/install -c -m 0755 native.so ./.gem.20150506-7661-1euec28
+installing default native libraries

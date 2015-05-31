@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+		<title>d3pie</title>
+		<!-- Load d3.js and c3.js -->
+		<script src="/assets/d3/d3.min.js" charset="utf-8"></script>
+		<script src="/assets/c3/c3.js"></script>
+		<script src="/assets/topojson/topojson.js"></script>
+		<script src="/assets/datamap/datamap-world.js"></script>
+		<!-- Load c3.css -->
+		<link href="/assets/c3/c3.css" rel="stylesheet" type="text/css">
+
+		<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+		<link href="//bootswatch.com/yeti/bootstrap.min.css" rel="stylesheet" type="text/css" />
+
+		<script src="//code.jquery.com/jquery.min.js"></script>
+		<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+</head>
+
+
+
+<body>
+  <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+        <br><br>
+          <h1><strong>Ciudad: </strong><%= @valoration.ciudad_v %></h1>
+        <br>
+        </div>
+      </div>
+      <div class="row clearfix">
+          <div class="col-md-12 column">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h3 class="panel-title">
+                    Datos informativos de la ciudad
+                    <small class="pull-right">TRAVEL TOP</small>
+                  </h3>
+                </div>                
+              </div>
+            
+
+              <div class="row clearfix">
+                  <div class="col-md-12 column">
+                      <div class="list-group">
+                        
+                          <div class="list-group-item">
+                              <h4 class="list-group-item-heading">
+                                  <strong>Valoración: </strong><%= @valoration.valor %>    
+                              </h4>
+                              <p class="list-group-item-text">
+                                  <span class="label label-warning">valoracion</span>
+                              </p>
+                          </div>
+                        
+                          <div class="list-group-item">
+                              <h4 class="list-group-item-heading">
+                                  <strong>Número de tweets positivos: </strong><%= Integer(@valoration.numPos)%>    
+                              </h4>
+                              <p class="list-group-item-text">
+                                  <span class="label label-success">positivos</span>
+                              </p>
+                          </div>
+                        
+                          <div class="list-group-item">
+                              <h4 class="list-group-item-heading">
+                                  <strong>Número de tweets negativos: </strong><%= Integer(@valoration.numNeg)%>  
+                              </h4>
+                              <p class="list-group-item-text">
+                                  <span class="label label-danger">negativos</span>
+                              </p>
+                          </div>
+
+                          <div class="list-group-item">
+                              <h4 class="list-group-item-heading">
+                                  <strong>Número de tweets neutros: </strong><%= Integer(@valoration.numNeutral)%>    
+                              </h4>
+                              <p class="list-group-item-text">
+                                  <span class="label label-info">neutros</span>
+                              </p>
+                          </div>
+
+                          <div class="list-group-item">
+                              <h4 class="list-group-item-heading">
+                                  <strong>Número de tweets en total: </strong><%= Integer(@valoration.numPos + @valoration.numNeg + @valoration.numNeutral)%>    
+                              </h4>
+                              <p class="list-group-item-text">
+                                  <span class="label label-default">total</span>
+                              </p>
+                          </div>
+
+                          <div class="list-group-item">
+                              <h4 class="list-group-item-heading">
+                                 <strong>Estadística </strong><div id="pie"></div>  
+                              </h4>
+                              <p class="list-group-item-text">
+                                  <span class="label label-primary">gráfica</span>
+                              </p>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+
+<br><br>
+
+<%= link_to 'Back', valorations_path, class: 'btn btn-primary btn-lg' %>
+
+
+
+<script>
+
+		function generate() {
+
+		}
+		
+		var storedData = [
+					{"Postivos": <%=@valoration.numPos%> , "Negativos": <%=@valoration.numNeg%>, "Neutros": <%=@valoration.numNeutral%>},
+				];
+
+		var chart = c3.generate({
+					size: {
+						height: 240,
+						width: 480
+					},
+					bindto: '#pie',
+					data: {
+						json: storedData,
+						keys: {
+							value: ['Postivos', 'Negativos', 'Neutros']
+						},
+						type : 'pie'
+					}
+				});
+</script>
+
+</body>
+
+</html>
